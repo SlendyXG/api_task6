@@ -24,18 +24,12 @@ def get_random_comic(latest_comic):
     return xkcd_url
 
 
-def get_comic_image(xkcd_url):
+def get_comic_info(xkcd_url):
     response = requests.get(xkcd_url)
     response.raise_for_status()
     image_url = response.json()['img']
-    return image_url
-
-
-def get_comic_message(xkcd_url):
-    response = requests.get(xkcd_url)
-    response.raise_for_status()
     message = response.json()['alt']
-    return message
+    return image_url, message
 
 
 def publish_comic(bot, chat_id, filename, message):
@@ -60,8 +54,7 @@ def main():
     try:
         latest_comic = get_latest_comic_number()
         xkcd_url = get_random_comic(latest_comic)
-        image_url = get_comic_image(xkcd_url)
-        message = get_comic_message(xkcd_url)
+        image_url, message = get_comic_info(xkcd_url)
         filename = 'comic_image.png'
         download_image(image_url, filename)
         publish_comic(bot, chat_id, filename, message)
