@@ -27,8 +27,9 @@ def get_random_comic(latest_comic):
 def get_comic_info(xkcd_url):
     response = requests.get(xkcd_url)
     response.raise_for_status()
-    image_url = response.json()['img']
-    message = response.json()['alt']
+    xkcd_data = response.json()
+    image_url = xkcd_data['img']
+    message = xkcd_data['alt']
     return image_url, message
 
 
